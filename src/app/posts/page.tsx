@@ -1,9 +1,9 @@
-import Link from 'next/link';
-import { getAllPosts } from '@/lib/post';
+import Link from "next/link";
+import { getAllPosts } from "@/lib/post";
 
 export const metadata = {
-  title: 'Posts',
-  description: 'All posts',
+  title: "Posts",
+  description: "All posts",
 };
 
 export default function PostPage() {

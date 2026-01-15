@@ -1,6 +1,6 @@
-import { notFound } from 'next/navigation';
-import { compileMdx } from '@/lib/mdx';
-import { getAllPosts } from '@/lib/post';
+import { notFound } from "next/navigation";
+import { compileMdx } from "@/lib/mdx";
+import { getAllPosts } from "@/lib/post";
 
 export const dynamicParams = false;
 
@@ -20,7 +20,7 @@ export async function generateMetadata({
 
   if (!post) {
     return {
-      title: 'Post not found',
+      title: "Post not found",
     };
   }
 

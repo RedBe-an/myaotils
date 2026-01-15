@@ -21,7 +21,11 @@ function getTextFromNode(node: React.ReactNode): string {
   return "";
 }
 
-export function CodeBlock({ className, children, ...props }: React.HTMLAttributes<HTMLPreElement>) {
+export function CodeBlock({
+  className,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLPreElement>) {
   const [copied, setCopied] = React.useState(false);
   const codeText = React.useMemo(() => getTextFromNode(children), [children]);
 

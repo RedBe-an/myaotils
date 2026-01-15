@@ -1,15 +1,15 @@
-import { sync } from 'glob';
-import path from 'path';
-import dayjs from 'dayjs';
-import fs from 'fs';
-import matter from 'gray-matter';
-import readingTime from 'reading-time';
+import { sync } from "glob";
+import path from "path";
+import dayjs from "dayjs";
+import fs from "fs";
+import matter from "gray-matter";
+import readingTime from "reading-time";
 
-const POSTS_PATH = path.join(process.cwd(), 'src', 'posts');
+const POSTS_PATH = path.join(process.cwd(), "src", "posts");
 
 const parsePost = (postPath: string): Post | undefined => {
   try {
-    const file = fs.readFileSync(postPath, { encoding: 'utf8' });
+    const file = fs.readFileSync(postPath, { encoding: "utf8" });
     const { content, data } = matter(file);
     const grayMatter = data as PostMatter;
 
@@ -19,13 +19,13 @@ const parsePost = (postPath: string): Post | undefined => {
 
     const relativePath = path
       .relative(POSTS_PATH, postPath)
-      .replace(/\\/g, '/')
-      .replace('.mdx', '');
+      .replace(/\\/g, "/")
+      .replace(".mdx", "");
 
     return {
       ...grayMatter,
       tags: grayMatter.tags.filter(Boolean),
-      date: dayjs(grayMatter.date).format('YYYY-MM-DD'),
+      date: dayjs(grayMatter.date).format("YYYY-MM-DD"),
       content,
       slug: relativePath,
       readingMinutes: Math.ceil(readingTime(content).minutes),
@@ -34,7 +34,7 @@ const parsePost = (postPath: string): Post | undefined => {
   } catch (e) {
     console.error(e);
   }
-}
+};
 
 export const getAllPosts = () => {
   const postPaths: string[] = sync(`${POSTS_PATH}/**/*.mdx`);
@@ -45,7 +45,6 @@ export const getAllPosts = () => {
     return [...ac, post];
   }, []);
 };
-
 
 type PostMatter = {
   title: string;

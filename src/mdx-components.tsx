@@ -27,7 +27,9 @@ const components: MDXComponents = {
     <Blockquote className={className} {...props} />
   ),
   ul: ({ className, ...props }) => <List className={className} {...props} />,
-  pre: ({ className, ...props }) => <CodeBlock className={className} {...props} />,
+  pre: ({ className, ...props }) => (
+    <CodeBlock className={className} {...props} />
+  ),
   code: ({ className, ...props }) => {
     const isBlock = className?.includes("language-");
     if (isBlock) {
@@ -35,11 +37,21 @@ const components: MDXComponents = {
     }
     return <InlineCode className={className} {...props} />;
   },
-  table: ({ className, ...props }) => <Table className={className} {...props} />,
-  tr: ({ className, ...props }) => <TableRow className={className} {...props} />,
-  th: ({ className, ...props }) => <TableHead className={className} {...props} />,
-  td: ({ className, ...props }) => <TableCell className={className} {...props} />,
-  small: ({ className, ...props }) => <Small className={className} {...props} />,
+  table: ({ className, ...props }) => (
+    <Table className={className} {...props} />
+  ),
+  tr: ({ className, ...props }) => (
+    <TableRow className={className} {...props} />
+  ),
+  th: ({ className, ...props }) => (
+    <TableHead className={className} {...props} />
+  ),
+  td: ({ className, ...props }) => (
+    <TableCell className={className} {...props} />
+  ),
+  small: ({ className, ...props }) => (
+    <Small className={className} {...props} />
+  ),
 };
 
 export function useMDXComponents(): MDXComponents {
