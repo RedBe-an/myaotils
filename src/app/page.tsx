@@ -1,3 +1,3 @@
-import UnderConstruction from "@/components/underconstruction"
+import UnderConstruction from "@/components/underconstruction";
 
 export default UnderConstruction;

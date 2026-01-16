@@ -1,0 +1,312 @@
+---
+title: 'Next.js를 “프레임워크”로 쓰는 법'
+description: '우리는 언제부터 Next.js을 단순 도구로 써왔는가'
+icon: ''
+image: ''
+tags:
+  - next.js
+  - react
+  - tips
+draft: false
+date: 2026-01-15 14:25:40
+---
+
+### — 시니어 개발자를 위한 App Router 사고 정리
+
+> 이 글은 Next.js를 *어떻게 쓰는가*가 아니라
+> **왜 이런 구조가 되었고, 언제 이 선택이 잘못되는지**를 설명하는 데 초점을 둔다.
+
+
+
+## 0. 이 글에서 다루는 범위
+
+* Next.js **App Router (`app/`) 기준**
+* React Server Components(RSC)를 **전제로 한 사고**
+* Pages Router, legacy 패턴은 **비교용으로만 언급**
+* 특정 마이너 버전의 내부 구현 세부사항은 다루지 않음 (확실하지 않음)
+
+---
+
+## 1. Next.js는 더 이상 “React + SSR”이 아니다
+
+과거의 Next.js는 다음 공식으로 설명할 수 있었다.
+
+
+`Next.js = React + Routing + SSR + DX`
+
+하지만 App Router 이후, 이 공식은 성립하지 않는다.
+
+지금의 Next.js는:
+
+* **실행 환경 분리 프레임워크**
+* **컴파일 타임에 렌더링 전략을 결정하는 도구**
+* **네트워크 경계를 코드 레벨에서 다루게 만드는 시스템**
+
+이다.
+
+즉, Next.js는 UI 프레임워크라기보다 **애플리케이션 런타임 설계 프레임워크**에 가깝다.
+
+---
+
+## 2. App Router의 본질: “파일 기반 UI 파이프라인”
+
+### 2.1 단순한 라우터가 아니다
+
+`app/` 디렉토리는 단순히 URL을 매핑하지 않는다.
+
+```txt
+app/
+ ├─ layout.tsx
+ ├─ page.tsx
+ ├─ loading.tsx
+ ├─ error.tsx
+ └─ not-found.tsx
+```
+
+이 구조는 사실상 **UI 실행 파이프라인 정의서**다.
+
+* `layout.tsx` → **지속되는 상태 경계**
+* `page.tsx` → **요청 단위 UI**
+* `loading.tsx` → **Suspense fallback**
+* `error.tsx` → **Error Boundary**
+* `not-found.tsx` → **의도된 404 상태**
+
+이것은 React의 개념을 **파일 시스템으로 고정시킨 DSL**이다.
+
+---
+
+## 3. React Server Components를 “옵션”으로 생각하면 안 되는 이유
+
+### 3.1 기본값은 Server Component다
+
+```tsx
+// app/page.tsx
+export default function Page() {
+  return <div>Hello</div>
+}
+```
+
+위 컴포넌트는:
+
+* 브라우저에 JS 번들로 전달되지 않는다
+* 서버에서 실행된다
+* 클라이언트 상태를 가질 수 없다
+
+이것은 **제약이 아니라 전제 조건**이다.
+
+---
+
+### 3.2 “use client”는 비용 선언이다
+
+```tsx
+'use client'
+
+export function Button() {
+  return <button>Click</button>
+}
+```
+
+이 한 줄은 다음을 의미한다.
+
+* 이 컴포넌트와 **모든 하위 트리**는
+* 클라이언트 번들에 포함되며
+* hydration 비용을 발생시킨다
+
+👉 즉, `use client`는 **기능 선언이 아니라 비용 선언**이다.
+
+---
+
+## 4. 서버 컴포넌트에서 데이터를 가져오는 이유
+
+### 4.1 단순히 “편해서”가 아니다
+
+```tsx
+// app/posts/page.tsx
+export default async function Page() {
+  const posts = await db.post.findMany()
+  return <PostList posts={posts} />
+}
+```
+
+이 패턴의 핵심 이점은 다음이다.
+
+1. **네트워크 홉 제거**
+2. **API 계층 중복 제거**
+3. **보안 경계 단순화**
+4. **캐싱 단위 통합**
+
+특히 2번과 4번은 시니어 레벨에서 중요하다.
+
+---
+
+### 4.2 API Route는 언제 필요한가
+
+다음 경우에는 여전히 API Route가 필요하다.
+
+* 외부 클라이언트(모바일 앱 등)
+* Webhook 엔드포인트
+* Streaming / SSE
+* 인증 미들웨어 공유
+
+그 외의 경우, **서버 컴포넌트 직접 호출이 더 단순하다.**
+
+---
+
+## 5. 캐싱을 “옵션”으로 두면 망한다
+
+### 5.1 App Router의 캐싱은 기본값이다
+
+```ts
+const data = await fetch(url)
+```
+
+위 코드는 **기본적으로 캐시된다**.
+
+이 사실을 모른 채 개발하면 다음 문제가 발생한다.
+
+* 데이터가 갱신되지 않는다
+* 배포 후에도 이전 결과가 나온다
+* “Next.js가 버그다”라는 결론에 도달한다
+
+문제가 아니라 **설계다**.
+
+---
+
+### 5.2 의도를 명시하라
+
+```ts
+// 항상 최신
+fetch(url, { cache: 'no-store' })
+
+// ISR
+fetch(url, { next: { revalidate: 60 } })
+```
+
+시니어 개발자의 역할은
+**캐시 전략을 코드에 드러내는 것**이다.
+
+---
+
+## 6. layout은 컴포넌트가 아니라 “상태 경계”다
+
+```tsx
+// app/dashboard/layout.tsx
+export default function Layout({ children }) {
+  return (
+    <Sidebar>
+      {children}
+    </Sidebar>
+  )
+}
+```
+
+이 코드는 단순해 보이지만, 중요한 의미가 있다.
+
+* 이 레이아웃은 **페이지 전환 시 재마운트되지 않는다**
+* 내부 상태는 **계속 유지된다**
+
+👉 즉, `layout.tsx`는 **UI shell**이다.
+
+잘못 설계하면:
+
+* stale state
+* 권한 누수
+* 잘못된 데이터 유지
+
+가 발생한다.
+
+---
+
+## 7. Error Boundary와 Not Found는 UX 설계 도구다
+
+### 7.1 error.tsx는 try/catch가 아니다
+
+```tsx
+// app/error.tsx
+'use client'
+
+export default function Error({ error, reset }) {
+  return (
+    <div>
+      <p>문제가 발생했습니다.</p>
+      <button onClick={reset}>다시 시도</button>
+    </div>
+  )
+}
+```
+
+이 컴포넌트는:
+
+* 특정 route subtree 전체를 감싼다
+* 사용자 경험을 **제어 가능한 실패 상태**로 만든다
+
+---
+
+### 7.2 not-found.tsx는 의도 표현이다
+
+404는 실패가 아니라 **의도된 결과**일 수 있다.
+
+```ts
+import { notFound } from 'next/navigation'
+
+if (!post) {
+  notFound()
+}
+```
+
+이것은 에러가 아니라 **비즈니스 로직의 표현**이다.
+
+---
+
+## 8. Next.js에서 상태를 설계하는 기준
+
+| 상태 종류   | 위치               |
+| ------- | ---------------- |
+| URL 상태  | searchParams     |
+| 서버 데이터  | Server Component |
+| UI 상호작용 | Client Component |
+| 글로벌 UI  | layout           |
+
+이 경계를 흐리면:
+
+* hydration mismatch
+* 불필요한 re-render
+* 디버깅 난이도 증가
+
+가 발생한다.
+
+---
+
+## 9. “Next.js스럽게” 작성된 코드의 특징
+
+* `useEffect`가 거의 없다
+* 데이터 fetching hook이 없다
+* API route 수가 적다
+* `use client`가 최소화되어 있다
+* 캐싱 전략이 명시되어 있다
+
+이것은 스타일 문제가 아니라 **아키텍처 성숙도 문제**다.
+
+---
+
+## 10. 마무리: Next.js는 선택이 아니라 책임이다
+
+Next.js를 선택했다는 것은:
+
+* 서버와 클라이언트의 경계를 직접 설계하겠다는 의미
+* 렌더링 전략을 코드로 표현하겠다는 선언
+* 성능과 DX의 트레이드오프를 이해하겠다는 책임
+
+이다.
+
+프레임워크는 문제를 해결해 주지 않는다.
+**문제를 드러내 줄 뿐이다.**
+
+---
+
+### 참고 기준 (명시)
+
+* React Server Components 공식 개념 문서 (React 팀)
+* Next.js App Router 공식 문서
+  → 구조와 개념은 공식 문서에 기반하되, 해석과 정리는 필자의 분석임
+

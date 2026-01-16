@@ -3,17 +3,31 @@ import Image from "next/image";
 
 export default function UnderConstruction() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-mono dark:bg-black text-center">
-        <div className="flex flex-col items-center justify-center">
-          <div className="mb-4 flex justify-center">
-            <Image src="/under-construction.png" alt="Under Construction" width={40} height={40} />
-          </div>
+    <section className="surface">
+      <div className="mx-auto flex max-w-lg flex-col items-center gap-6 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border border-emerald-500/30 bg-emerald-500/10">
+          <Image
+            src="/under-construction.png"
+            alt="Under Construction"
+            width={40}
+            height={40}
+            className="h-10 w-10"
+          />
+        </div>
+        <p className="font-mono text-sm text-muted-foreground">
           <Typewriter
-            words={['Hello.', 'This page is under construction.', 'Please come back later.', 'Thank you.']}
+            words={[
+              "Hello.",
+              "This page is under construction.",
+              "Please come back later.",
+              "Thank you.",
+            ]}
             typeSpeed={40}
             deleteSpeed={30}
-            delaySpeed={1000} />
-        </div>
-    </div>
+            delaySpeed={1000}
+          />
+        </p>
+      </div>
+    </section>
   );
 }
