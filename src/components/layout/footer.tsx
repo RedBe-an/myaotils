@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const footerLinks = [
@@ -14,10 +15,7 @@ export default function Footer() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-12 md:flex-row md:items-center md:justify-between">
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-sm font-semibold tracking-wide text-zinc-900 dark:text-zinc-100">
-            <span
-              className="h-2 w-2 rounded-full bg-emerald-500"
-              aria-hidden="true"
-            />
+            <Image src="/pawcon.png" alt="Logo" width={24} height={24} />
             myaotils
           </div>
           <p className="max-w-md text-sm leading-6 text-zinc-600 dark:text-zinc-400">

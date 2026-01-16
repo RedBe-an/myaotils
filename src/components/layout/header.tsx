@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -14,10 +15,7 @@ export default function Header() {
           href="/"
           className="flex items-center gap-2 text-sm font-semibold tracking-wide text-zinc-900 dark:text-zinc-100"
         >
-          <span
-            className="h-2 w-2 rounded-full bg-emerald-500"
-            aria-hidden="true"
-          />
+          <Image src="/pawcon.png" alt="Logo" width={24} height={24} />
           myaotils
         </Link>
 

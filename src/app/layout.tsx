@@ -1,12 +1,31 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
+import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const freesentation = localFont({
+  src: "../assets/fonts/Freesentation/FreesentationVF.ttf",
+  variable: "--font-freesentation",
+  weight: "100 900",
+  display: "swap",
+});
+
+const paperlogy = localFont({
+  src: [
+    { path: "../assets/fonts/Paperlogy/Paperlogy-1Thin.ttf", weight: "100", style: "normal" },
+    { path: "../assets/fonts/Paperlogy/Paperlogy-2ExtraLight.ttf", weight: "200", style: "normal" },
+    { path: "../assets/fonts/Paperlogy/Paperlogy-3Light.ttf", weight: "300", style: "normal" },
+    { path: "../assets/fonts/Paperlogy/Paperlogy-4Regular.ttf", weight: "400", style: "normal" },
+    { path: "../assets/fonts/Paperlogy/Paperlogy-5Medium.ttf", weight: "500", style: "normal" },
+    { path: "../assets/fonts/Paperlogy/Paperlogy-6SemiBold.ttf", weight: "600", style: "normal" },
+    { path: "../assets/fonts/Paperlogy/Paperlogy-7Bold.ttf", weight: "700", style: "normal" },
+    { path: "../assets/fonts/Paperlogy/Paperlogy-8ExtraBold.ttf", weight: "800", style: "normal" },
+    { path: "../assets/fonts/Paperlogy/Paperlogy-9Black.ttf", weight: "900", style: "normal" },
+  ],
+  variable: "--font-paperlogy",
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -27,7 +46,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
+        className={`${freesentation.variable} ${paperlogy.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
         <Header />
         <main className="flex-1">
