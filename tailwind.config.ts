@@ -5,7 +5,11 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ["var(--font-freesentation)", ...fontFamily.sans],
-        heading: ["var(--font-paperlogy)", "var(--font-freesentation)", ...fontFamily.sans],
+        heading: [
+          "var(--font-paperlogy)",
+          "var(--font-freesentation)",
+          ...fontFamily.sans,
+        ],
         mono: ["var(--font-geist-mono)", ...fontFamily.mono],
       },
       typography: (theme: any) => ({

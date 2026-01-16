@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useMemo, useState } from "react";
 
@@ -22,7 +22,9 @@ export default function CountCharactersPage() {
         <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
           글자 수 세기
         </h1>
-        <p className="text-sm text-muted-foreground">글자 수를 빠르게 세어보세요.</p>
+        <p className="text-sm text-muted-foreground">
+          글자 수를 빠르게 세어보세요.
+        </p>
       </div>
       <div className="relative">
         <textarea
@@ -34,11 +36,15 @@ export default function CountCharactersPage() {
         <dl className="pointer-events-none absolute bottom-4 right-4 flex flex-col items-end gap-1 rounded-lg bg-card/80 px-3 py-2 text-xs text-muted-foreground shadow-sm backdrop-blur">
           <div className="flex items-center gap-2">
             <dt className="font-medium text-foreground/70">띄어쓰기 포함</dt>
-            <dd className="font-semibold text-foreground">{stats.charsWithSpaces}</dd>
+            <dd className="font-semibold text-foreground">
+              {stats.charsWithSpaces}
+            </dd>
           </div>
           <div className="flex items-center gap-2">
             <dt className="font-medium text-foreground/70">띄어쓰기 제외</dt>
-            <dd className="font-semibold text-foreground">{stats.charsWithoutSpaces}</dd>
+            <dd className="font-semibold text-foreground">
+              {stats.charsWithoutSpaces}
+            </dd>
           </div>
           <div className="flex items-center gap-2">
             <dt className="font-medium text-foreground/70">Bytes</dt>
