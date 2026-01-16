@@ -212,5 +212,5 @@ code.language-css .token.selector > .token.pseudo-element {
 .prose pre {
   color: var(--prism-foreground);
   background-color: var(--prism-background);
-  border-radius: 0.0024rem;
+  border-radius: 0.75rem;
 }

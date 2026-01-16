@@ -14,16 +14,20 @@ export default function Custom401() {
   const randomImage = images[Math.floor(Math.random() * images.length)];
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black text-center">
+    <section className="surface flex flex-col items-center gap-6 text-center">
       <Image
         src={randomImage}
         alt="401 Unauthorized"
         width={240}
         height={240}
-        className="mb-6 rounded-xl"
+        className="h-48 w-48 rounded-2xl border border-zinc-200/70 object-cover shadow-sm dark:border-zinc-800/80"
       />
-      <H3>401 - 권한이 없습니다.</H3>
-      <p>접근 권한이 없는 페이지입니다.</p>
-    </div>
+      <H3 className="text-zinc-900 dark:text-zinc-100">
+        401 - 권한이 없습니다.
+      </H3>
+      <p className="max-w-sm text-sm text-muted-foreground">
+        접근 권한이 없는 페이지입니다.
+      </p>
+    </section>
   );
 }

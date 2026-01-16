@@ -45,13 +45,13 @@ export default async function PostPage({
   const { content } = await compileMdx(post.content);
 
   return (
-    <article className="mx-auto mt-8 w-full max-w-3xl px-6">
-      <header className="mb-8">
-        <h1 className="mb-2 text-3xl font-semibold tracking-tight">
+    <article className="surface mx-auto max-w-3xl space-y-8">
+      <header className="space-y-3">
+        <h1 className="text-3xl font-semibold tracking-tight text-zinc-900 dark:text-zinc-100">
           {post.title}
         </h1>
         <p className="text-sm text-muted-foreground">{post.description}</p>
-        <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
           <span>{post.date}</span>
           <span>•</span>
           <span>{post.readingMinutes} min read</span>
@@ -59,7 +59,9 @@ export default async function PostPage({
           <span>{post.wordCount} words</span>
         </div>
       </header>
-      <section>{content}</section>
+      <div className="prose prose-zinc max-w-none dark:prose-invert">
+        {content}
+      </div>
     </article>
   );
 }

@@ -1,17 +1,21 @@
 /* common markdown */
+
 .prose {
-  @apply text-secondary;
+  @apply text-white;
 }
+
 .prose strong,
+.prose h1,
 .prose h2,
 .prose h3,
 .prose h4,
+.prose h5,
+.prose h6,
 .prose thead th {
-  @apply text-primary;
+  @apply text-white;
 }
-
 .prose del {
-  @apply text-muted-foreground;
+  @apply text-white;
 }
 
 .prose p {
@@ -27,7 +31,7 @@
 }
 
 .prose a {
-  @apply text-primary break-words transition-all;
+  @apply text-white break-words transition-all;
   @apply decoration-neutral-400 underline-offset-2 hover:decoration-neutral-300;
 }
 .prose a:has(strong) {
@@ -42,6 +46,11 @@
 .prose code:not(:where(pre *)) {
   @apply text-primary rounded-lg px-2 py-0.5 content-none;
   @apply bg-neutral-200 dark:bg-(--prism-background);
+}
+
+.prose pre,
+.prose pre code {
+  @apply text-foreground;
 }
 
 .prose pre::-webkit-scrollbar {

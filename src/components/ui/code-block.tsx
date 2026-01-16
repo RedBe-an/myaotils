@@ -52,7 +52,7 @@ export function CodeBlock({
       >
         {copied ? "복사됨" : "복사"}
       </button>
-      <pre className={cn("pt-10", className)} {...props}>
+      <pre className={cn("pr-16", className)} {...props}>
         {children}
       </pre>
     </div>
