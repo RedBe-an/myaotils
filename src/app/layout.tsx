@@ -4,6 +4,7 @@ import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import { Head } from "next/document";
 
 const freesentation = localFont({
   src: "../assets/fonts/Freesentation/FreesentationVF.ttf",
@@ -72,6 +73,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Myaotils",
   description: "A collection of useful utilities for developers and students.",
+  verification: {
+    google: "QWitR0AsUG-rAScuvX4143iDc2AkAwi-T6hmsGOUKKU",
+  },
 };
 
 export default function RootLayout({
@@ -81,9 +85,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="dark">
-      <head>
-        <meta name="google-site-verification" content="QWitR0AsUG-rAScuvX4143iDc2AkAwi-T6hmsGOUKKU" />
-      </head>
       <body
         className={`${freesentation.variable} ${paperlogy.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
