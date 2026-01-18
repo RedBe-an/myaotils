@@ -4,6 +4,7 @@ import { Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import { Head } from "next/document";
 
 const freesentation = localFont({
   src: "../assets/fonts/Freesentation/FreesentationVF.ttf",
@@ -81,9 +82,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="dark">
-      <head>
+      <Head>
         <meta name="google-site-verification" content="QWitR0AsUG-rAScuvX4143iDc2AkAwi-T6hmsGOUKKU" />
-      </head>
+      </Head>
       <body
         className={`${freesentation.variable} ${paperlogy.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
