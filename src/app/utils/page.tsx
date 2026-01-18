@@ -55,9 +55,16 @@ export default function UtilsPage() {
         <UtilityCard
           name="KICE 국어 지문 다운로드"
           slug="kice-korean-download"
-          status="indev"
+          status="stable"
           icon={Book}
           description="평가원 국어 지문을 원하는 형식으로 변환하고 내려받을 수 있는 도구입니다."
+        />
+        <UtilityCard
+          name="음악 다운로드"
+          slug="music-downloader"
+          status="indev"
+          icon={Music}
+          description="Spotify와 유튜브를 이용해서 음악을 다운로드 받아보세요."
         />
         <UtilityCard
           name="서브웨이 주문 시각화"
@@ -65,13 +72,6 @@ export default function UtilsPage() {
           status="onplan"
           icon={Hamburger}
           description="서브웨이 주문할 때 어려우셨다면 이 도구를 사용해보세요."
-        />
-        <UtilityCard
-          name="음악 다운로드"
-          slug="music-downloader"
-          status="onplan"
-          icon={Music}
-          description="Spotify와 유튜브를 이용해서 음악을 다운로드 받아보세요."
         />
       </div>
     </section>
