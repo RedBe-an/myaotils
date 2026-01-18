@@ -73,6 +73,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Myaotils",
   description: "A collection of useful utilities for developers and students.",
+  verification: {
+    google: "QWitR0AsUG-rAScuvX4143iDc2AkAwi-T6hmsGOUKKU",
+  },
 };
 
 export default function RootLayout({
@@ -82,9 +85,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="dark">
-      <Head>
-        <meta name="google-site-verification" content="QWitR0AsUG-rAScuvX4143iDc2AkAwi-T6hmsGOUKKU" />
-      </Head>
       <body
         className={`${freesentation.variable} ${paperlogy.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
