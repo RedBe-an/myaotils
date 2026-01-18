@@ -1,14 +1,8 @@
-import { Badge } from "@/components/ui/badge";
+import KiceDownloadClient, {
+  type KiceRow,
+} from "@/app/utils/kice-korean-download/KiceDownloadClient";
 import fs from "node:fs/promises";
 import path from "node:path";
-
-type KiceRow = {
-  year: string;
-  examType: string;
-  number: string;
-  category: string;
-  subject: string;
-};
 
 const EXAM_TYPES = ["수능", "9모", "6모"] as const;
 
@@ -69,9 +63,9 @@ const normalizeRows = (rows: string[][]): KiceRow[] => {
 
   return dataRows
     .map((row) => {
-      const [year, examType, number, category, subject] = row;
+      const [year, examType, number, category, subject, id] = row;
 
-      if (!year || !examType || !category || !subject) {
+      if (!year || !examType || !category || !subject || !id) {
         return null;
       }
 
@@ -81,6 +75,7 @@ const normalizeRows = (rows: string[][]): KiceRow[] => {
         number: number?.trim() ?? "",
         category: category.trim(),
         subject: subject.trim(),
+        id: id.trim(),
       };
     })
     .filter((row): row is KiceRow => row !== null);
@@ -118,6 +113,14 @@ export default async function UtilsPage() {
     (a, b) => Number(b) - Number(a),
   );
 
+  const groups = years.map((year) => ({
+    year,
+    examTypes: EXAM_TYPES.map((examType) => ({
+      examType,
+      items: yearMap.get(year)?.get(examType) ?? [],
+    })),
+  }));
+
   return (
     <section className="surface mx-auto max-w-4xl space-y-10">
       <div className="space-y-2">
@@ -130,51 +133,7 @@ export default async function UtilsPage() {
         </p>
       </div>
 
-      <div className="space-y-8">
-        {years.map((year, index) => (
-          <div key={year} className="relative flex gap-6">
-            <div className="relative flex w-16 flex-col items-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-zinc-200 bg-background text-base font-semibold text-zinc-900 shadow-sm dark:border-zinc-800 dark:text-zinc-100">
-                {year}
-              </div>
-              {index !== years.length - 1 ? (
-                <div className="mt-4 h-full w-px bg-zinc-200 dark:bg-zinc-800" />
-              ) : null}
-            </div>
-            <div className="flex-1 space-y-5 pt-1">
-              {EXAM_TYPES.map((examType) => {
-                const items = yearMap.get(year)?.get(examType) ?? [];
-                return (
-                  <div key={`${year}-${examType}`} className="space-y-3">
-                    <div className="flex items-center gap-2">
-                      <Badge variant="default">{examType}</Badge>
-                    </div>
-                    <div className="space-y-2">
-                      {items.length === 0 ? (
-                        <p className="text-sm text-muted-foreground">
-                          해당 시험 데이터가 없습니다.
-                        </p>
-                      ) : (
-                        items.map((item) => (
-                          <div
-                            key={`${year}-${examType}-${item.number}-${item.subject}`}
-                            className="flex flex-wrap items-center gap-2"
-                          >
-                            <Badge variant="secondary">{item.category}</Badge>
-                            <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                              {item.subject}
-                            </span>
-                          </div>
-                        ))
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
+      <KiceDownloadClient groups={groups} />
     </section>
   );
 }
